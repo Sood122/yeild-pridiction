@@ -1,6 +1,6 @@
-
 import streamlit as st
 import numpy as np
+import pandas as pd
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 
@@ -8,6 +8,19 @@ from skfuzzy import control as ctrl
 st.set_page_config(page_title="Crop Recommendation System", layout="centered")
 
 st.title("🌾 Crop Yield & Recommendation System using Fuzzy Logic & Season")
+
+# --- Optional: Load crop data from GitHub ---
+@st.cache_data
+def load_crop_data():
+    url = "https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/master/crop_data.csv"
+    try:
+        df = pd.read_csv(url)
+        return df
+    except Exception as e:
+        st.warning(f"⚠️ Could not load crop data: {e}")
+        return None
+
+crop_df = load_crop_data()
 
 # Input sliders
 rain = st.slider("🌧️ Rainfall (mm)", 0, 200, 100)
@@ -70,3 +83,8 @@ recommended_crops = season_crop_map.get(season, [])
 st.subheader(f"🌿 Best Crops for {season} Season:")
 for crop in recommended_crops:
     st.markdown(f"- {crop}")
+
+# Optional: Show crop dataset preview
+if crop_df is not None:
+    st.subheader("📊 Uploaded Crop Dataset Preview")
+    st.dataframe(crop_df.head())
