@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
+crop_df = pd.read_csv('crop_data.csv')
 
 # Page config
 st.set_page_config(page_title="Crop Recommendation System", layout="centered")
